@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 const path = require("path");
-bodyParser = require("body-parser");
+var bodyParser = require("body-parser");
 const helper = require('./helper');
 // import lengthAfterCancellation from './helper';
 
@@ -20,8 +20,8 @@ app.get("/", function(req, res) {
 app.post("/getResult", function(req, res) {
   var name1 = req.body.name_1.toLowerCase().replace(" ", "");
   var name2 = req.body.name_2.toLowerCase().replace(" ", "");
-  lengthOfName1 = name1.length;
-  lengthOfName2 = name2.length;
+  var lengthOfName1 = name1.length;
+  var lengthOfName2 = name2.length;
   console.log("name1: ", name1, "name2: ", name2);
   totalLength = helper.lengthAfterCancellation(
     lengthOfName1,
