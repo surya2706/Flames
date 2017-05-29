@@ -63,10 +63,12 @@
   },
   "scripts": {
     "start": "npm-run-all -p watch server",
-    "server": "nodemon server/index.js",
+    "server": "nodemon dist/index.js",
     "watch": "webpack --watch --progress",
     "build": "NODE_ENV=production webpack --progress",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "dev": "babel-node server/index.js",
+    "prestart": "babel server --out-dir dist"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
   "main": "server/index.js",

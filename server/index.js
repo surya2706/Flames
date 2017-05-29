@@ -1,5 +1,5 @@
-// import express from 'express';
-var express = require("express");
+import express from 'express';
+// var express = require("express");
 var app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
