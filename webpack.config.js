@@ -23,9 +23,9 @@ if (!debug) {
 module.exports = {
   context: __dirname,
   devtool: debug ? 'inline-cheap-source-map' : false,
-  entry: './server/index.js',
+  entry: './src/index.jsx',
   output: {
-    path: path.resolve(__dirname, 'static/build/js'),
+    path: path.resolve(__dirname, 'static/build/'),
     filename: 'app.js',
   },
   module: {

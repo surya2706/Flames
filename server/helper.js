@@ -4,8 +4,8 @@ exports.lengthAfterCancellation = (l1, l2, name1, name2) => {
   for (var x in name1) {
     for (var y in name2) {
       if (x === y) {
-        name1.replace(x,'');
-        name2.replace(y,'');
+        name1 = name1.replace(x,'');
+        name2 = name2.replace(y,'');
       } else {
         continue;
       }

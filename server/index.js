@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 const path = require("path");
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 const helper = require('./helper');
 // import lengthAfterCancellation from './helper';
 
@@ -9,12 +9,12 @@ app.use(bodyParser.json());
 
 app.use(
   express.static(
-    path.join("/Volumes/HD2/Projects/node_project/flames_project", "build")
+    path.join(__dirname, "../static/build/")
   )
 );
 
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
 app.post("/getResult", function(req, res) {
@@ -23,7 +23,7 @@ app.post("/getResult", function(req, res) {
   var lengthOfName1 = name1.length;
   var lengthOfName2 = name2.length;
   console.log("name1: ", name1, "name2: ", name2);
-  totalLength = helper.lengthAfterCancellation(
+  var totalLength = helper.lengthAfterCancellation(
     lengthOfName1,
     lengthOfName2,
     name1,
