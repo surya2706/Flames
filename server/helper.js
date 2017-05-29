@@ -1,6 +1,6 @@
 
 
-exports.lengthAfterCancellation = (l1, l2, name1, name2) => {
+export const lengthAfterCancellation = (l1, l2, name1, name2) => {
   for (var x in name1) {
     for (var y in name2) {
       if (x === y) {
