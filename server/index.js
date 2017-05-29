@@ -1,3 +1,4 @@
+// import express from 'express';
 var express = require("express");
 var app = express();
 const path = require("path");
@@ -7,10 +8,12 @@ const helper = require('./helper');
 
 app.use(bodyParser.json());
 
+const static_dir = path.join(__dirname, "../static/");
+
+console.log(`static_dir : ${static_dir}`);
+
 app.use(
-  express.static(
-    path.join(__dirname, "../static/build/")
-  )
+  express.static(static_dir)
 );
 
 app.get("/", function(req, res) {
