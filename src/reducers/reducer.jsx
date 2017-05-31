@@ -36,6 +36,7 @@ const showResponse = (state = {}, action) => {
       let result = getResult(action.name1, action.name2, action.letter);
       return {
         ...state,
+        letter: action.letter,
         message: result
       };
     default:

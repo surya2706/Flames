@@ -1,44 +1,61 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
-import { Input, Button, Message } from "semantic-ui-react";
+import { Button, Message, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { fetchResult } from "../actions/actions";
+// import { fetchResult } from "../actions/actions";
+
+import { validate } from "./validate";
+import { submit } from "./submit";
+import { formInput } from "./form";
 import "../index.css";
 
-const formInput = ({ input, label, type, meta: { touched, error } }) => {
-  const hasError = touched && error !== undefined;
-  return (
-    <div>
-      <label>{label}</label>
-      <div>
-        <Input
-          error={hasError}
-          fluid
-          placeholder={label}
-          type={type}
-          {...input}
-        />
-        {touched && error && <span>{error}</span>}
-      </div>
-      {hasError && <Message error header="Error" content={error} />}
-    </div>
-  );
-};
+// const formInput = ({ input, label, type, meta: { touched, error } }) => {
+//   const hasError = touched && error !== undefined;
+//   return (
+//     <div>
+//       <div>
+//         <Header sub color="blue" content={label} />
+//       {/* <label>{label}</label> */}
+//       </div>
+//       <br />
+//       <div className="reminder-form">
+//         <Input
+//           error={hasError}
+//           fluid
+//           placeholder={label}
+//           type={type}
+//           {...input}
+//         />
+//       </div>
+//       {hasError && <Message error header="Error" content={error} />}
+//     </div>
+//   );
+// };
 
-const submit = (values, dispatch) => {
-  return dispatch(fetchResult(values.name_1, values.name_2));
-};
+// const submit = (values, dispatch) => {
+//   let name1 = values.name_1.toLowerCase().replace(/ /g, "");
+//   let name2 = values.name_2.toLowerCase().replace(/ /g, "");
+//   if (name1 !== name2) {
+//     return dispatch(fetchResult(name1, name2));
+//   } else {
+//     console.log('error araised');
+//     throw new SubmissionError({
+//       _error: 'Invalid entry. Both the names are same!'
+//     })
+//   }
+// };
 
 class InputForm extends Component {
   render() {
-    const { handleSubmit, response } = this.props;
+    const { handleSubmit, response, error } = this.props;
     const hasMessage = response.message !== undefined;
+    const messageHeader = `You have got ${response.letter}`;
     return (
       <div className="form">
         <div className="title">
-          FLAMES
+          <Header as="h1" color="blue" content="FLAMES" />
         </div>
-        <form onSubmit={handleSubmit(submit)} className="reminder-form">
+        <form onSubmit={handleSubmit(submit)}>
           <Field
             name="name_1"
             component={formInput}
@@ -53,31 +70,44 @@ class InputForm extends Component {
             label="Enter your partner name"
           />
           <br />
-          <Button type="submit" content="Click here" />
+          {error &&
+            <Message
+              error
+              header="Invalid entry"
+              content="Both names are same!"
+            />}
+          <br />
+          <Button color="blue" type="submit" content="Click here" />
         </form>
+        <br />
         <div className="message-box">
-          {hasMessage && <Message content={response.message} />}
+          {hasMessage &&
+            <Message
+              color="blue"
+              header={messageHeader}
+              content={response.message}
+            />}
         </div>
       </div>
     );
   }
 }
 
-const validate = values => {
-  const errors = {};
-  if (!values.name_1 || values.name_1 === "") {
-    errors.name_1 = "Required";
-  } else if (!values.name_1.match(/^[a-zA-Z]+(\s{0,1}[a-zA-Z ])*$/)) {
-    errors.name_1 = "Enter a valid name";
-  }
-
-  if (!values.name_2 || values.name_2 === "") {
-    errors.name_2 = "Required";
-  } else if (!values.name_2.match(/^[a-zA-Z]+(\s{0,1}[a-zA-Z ])*$/)) {
-    errors.name_2 = "Enter a valid name";
-  }
-  return errors;
-};
+// const validate = values => {
+//   const errors = {};
+//   if (!values.name_1 || values.name_1 === "") {
+//     errors.name_1 = "Required";
+//   } else if (!values.name_1.match(/^[a-zA-Z]+(\s{0,1}[a-zA-Z ])*$/)) {
+//     errors.name_1 = "Enter a valid name";
+//   }
+//
+//   if (!values.name_2 || values.name_2 === "") {
+//     errors.name_2 = "Required";
+//   } else if (!values.name_2.match(/^[a-zA-Z]+(\s{0,1}[a-zA-Z ])*$/)) {
+//     errors.name_2 = "Enter a valid name";
+//   }
+//   return errors;
+// };
 
 const Form = reduxForm({
   form: "GetNames",

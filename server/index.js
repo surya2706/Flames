@@ -23,12 +23,8 @@ app.get("/", function(req, res) {
 
 app.post("/getResult", function(req, res) {
   console.log(req.body.name_1, req.body.name_2);
-  console.log(req.body);
-  console.log(res.body);
-  var name1 = req.body.name_1.toLowerCase().replace(" ", "");
-  var name2 = req.body.name_2.toLowerCase().replace(" ", "");
-  name1 = Array.from(name1);
-  name2 = Array.from(name2);
+  var name1 = Array.from(req.body.name_1);
+  var name2 = Array.from(req.body.name_2);
   console.log("name1: ", name1, "name2: ", name2);
   var totalLength = lengthAfterCancellation(name1, name2);
   console.log("totalLength :", totalLength);
