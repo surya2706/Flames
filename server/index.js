@@ -2,12 +2,7 @@ import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
 import { lengthAfterCancellation, getLetter } from "./helper";
-// var express = require("express");
 var app = express();
-// const path = require("path");
-// const bodyParser = require("body-parser");
-// const helper = require('./helper');
-// import lengthAfterCancellation from './helper';
 
 app.use(bodyParser.json());
 

@@ -4,8 +4,7 @@ import { Button, Message, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { validate } from "./validate";
 import { submit } from "./submit";
-import { formInput } from "./form";
-// import "../index.css";
+import { formInput } from "./form_input";
 
 class InputForm extends Component {
   render() {
