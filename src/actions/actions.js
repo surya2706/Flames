@@ -17,11 +17,11 @@ export const fetchResult = (name_1, name_2) => dispatch => {
 
   return fetch("/getResult", {
     method: "POST",
-    headers: {'Content-Type':'application/json'},
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(flamespair)
   })
-  .then(response => response.json())
-  .then(json => {
-    return dispatch(showResponse(name_1, name_2, json.letter));
-  });
+    .then(response => response.json())
+    .then(json => {
+      return dispatch(showResponse(name_1, name_2, json.letter));
+    });
 };
