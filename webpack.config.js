@@ -38,11 +38,16 @@ module.exports = {
           presets: ['latest', 'react', 'stage-2'],
         },
       },
+      {
+        test: /\.css?$/,
+        loader: 'style-loader!css-loader',
+
+      }
     ],
   },
   plugins,
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.css'],
     modules: ['node_modules'],
   },
 };

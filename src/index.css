@@ -1,0 +1,24 @@
+.form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 26px;
+}
+
+Field {
+  margin: 5px;
+}
+
+.reminder-form {
+  padding: 5px;
+}
+
+.message-box {
+  display: inline-block;
+  align-items: center;
+}

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { Input, Button, Message } from "semantic-ui-react";
 import { connect } from 'react-redux'
-import { getInputs } from '../actions/actions';
+import { fetchResult } from '../actions/actions';
+import '../index.css';
 
 const formInput = ({ input, label, type, meta: { touched, error } }) => {
   const hasError = touched && error !== undefined;
@@ -25,34 +26,51 @@ const formInput = ({ input, label, type, meta: { touched, error } }) => {
 };
 
 const submit = (values, dispatch) => {
-  return dispatch(getInputs(values.name_1, values.name_2));
+  return dispatch(fetchResult(values.name_1, values.name_2));
   // console.log('submmited values', values.name_1, values.name_2);
   // return dispatch(getInputs(values.name_1, values.name_2));
 };
 
+// const Result = (message) => {
+//   console.log(message);
+//   return (
+//     <div>
+//       <Message content={message} />
+//     </div>
+//   )
+// }
+
 
 class InputForm extends Component {
-
   render() {
-    const { handleSubmit, name_1, name_2 } = this.props;
+    const { handleSubmit, response } = this.props;
+    const hasMessage = response.message !== undefined;
     return (
-      <form onSubmit={handleSubmit(submit)}>
-        <Field
-          name="name_1"
-          component={formInput}
-          type="text"
-          label="Enter your name"
-        />
-        <br />
-        <Field
-          name="name_2"
-          component={formInput}
-          type="text"
-          label="Enter your partner name"
-        />
-        <br />
-        <Button type="submit" content="Click here" />
-      </form>
+      <div className="form">
+        <div className="title">
+          FLAMES
+        </div>
+        <form onSubmit={handleSubmit(submit)} className="reminder-form">
+          <Field
+            name="name_1"
+            component={formInput}
+            type="text"
+            label="Enter your name"
+          />
+          <br />
+          <Field
+            name="name_2"
+            component={formInput}
+            type="text"
+            label="Enter your partner name"
+          />
+          <br />
+          <Button type="submit" content="Click here" />
+        </form>
+        <div className="message-box">
+          {hasMessage && <Message content={response.message} />}
+        </div>
+      </div>
     );
   }
 }
@@ -80,7 +98,7 @@ const Form = reduxForm({
 
 function mapStateToProps(state) {
   return {
-    getInputs: state
+    response: state.showResponse
   }
 }
 

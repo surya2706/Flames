@@ -1,7 +1,7 @@
-import express from 'express';
-import path from 'path';
-import bodyParser from 'body-parser';
-import { lengthAfterCancellation } from './helper';
+import express from "express";
+import path from "path";
+import bodyParser from "body-parser";
+import { lengthAfterCancellation, getLetter } from "./helper";
 // var express = require("express");
 var app = express();
 // const path = require("path");
@@ -15,32 +15,28 @@ const static_dir = path.join(__dirname, "../static/");
 
 console.log(`static_dir : ${static_dir}`);
 
-app.use(
-  express.static(static_dir)
-);
+app.use(express.static(static_dir));
 
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  res.sendFile(path.join(__dirname, "../public", "index.html"));
 });
 
 app.post("/getResult", function(req, res) {
+  console.log(req.body.name_1, req.body.name_2);
+  console.log(req.body);
+  console.log(res.body);
   var name1 = req.body.name_1.toLowerCase().replace(" ", "");
   var name2 = req.body.name_2.toLowerCase().replace(" ", "");
   name1 = Array.from(name1);
   name2 = Array.from(name2);
   console.log("name1: ", name1, "name2: ", name2);
-  var lengthOfName1 = name1.length;
-  var lengthOfName2 = name2.length;
-  // console.log("lengthOfName1: ", lengthOfName1, "lengthOfName2: ", lengthOfName2);
-  var totalLength = lengthAfterCancellation(
-    lengthOfName1,
-    lengthOfName2,
-    name1,
-    name2
-  );
-  console.log('totalLength :', totalLength);
-  res.writeHead(200, { "Content-Type": "text/html" });
-  res.end("thanks");
+  var totalLength = lengthAfterCancellation(name1, name2);
+  console.log("totalLength :", totalLength);
+  var flames = "FLAMES";
+  var letter = getLetter(totalLength, flames);
+  console.log("letter", letter);
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ letter: letter }));
 });
 
 app.listen(3000, function() {
