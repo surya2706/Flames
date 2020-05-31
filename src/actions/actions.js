@@ -1,27 +1,24 @@
-export const SHOW_RESPONSE = "SHOW_RESPONSE";
+export const SUBMIT_INPUT = 'SUBMIT_INPUT';
+export const SHOW_RESPONSE = 'SHOW_RESPONSE';
+export const SUBMIT_FAILED = 'SUBMIT_FAILED';
 
-const showResponse = (name1, name2, letter) => {
-  const action = {
+export const submitInput = (name_1, name_2) => ({
+  type: SUBMIT_INPUT,
+  name_1,
+  name_2,
+});
+
+export const showResponse = (name_1, name_2, letter) => {
+  return {
     type: SHOW_RESPONSE,
-    name1,
-    name2,
-    letter
+    name_1,
+    name_2,
+    letter,
   };
-  console.log("Response from server is ", letter);
-  return action;
 };
 
-export const fetchResult = (name_1, name_2) => dispatch => {
-  let jsonobject;
-  let flamespair = { name_1: name_1, name_2: name_2 };
-
-  return fetch("/getResult", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(flamespair)
-  })
-    .then(response => response.json())
-    .then(json => {
-      return dispatch(showResponse(name_1, name_2, json.letter));
-    });
-};
+export const submitFailed = (payload) => ({
+  type: SUBMIT_FAILED,
+  payload: payload,
+  error: true,
+});
