@@ -1,68 +1,89 @@
-import React, { Component } from "react";
-import { Field, reduxForm } from "redux-form";
-import { Button, Message, Header } from "semantic-ui-react";
-import { connect } from "react-redux";
-import { validate } from "./validate";
-import { submit } from "./submit";
-import { formInput } from "./form_input";
+import React, { useState } from 'react';
+import { Button, Message, Header } from 'semantic-ui-react';
+import { FormInput } from './form_input';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateName1, updateName2 } from '../slice/inputSlice';
+import { validateInputs, fetchResult, sameNamesError } from '../slice/resultSlice';
 
-class InputForm extends Component {
-  render() {
-    const { handleSubmit, response, error } = this.props;
-    const hasMessage = response.message !== undefined;
-    const messageHeader = `You have got ${response.letter}`;
-    return (
-      <div className="form">
-        <div className="title">
-          <Header as="h1" color="blue" content="FLAMES" />
-        </div>
-        <form onSubmit={handleSubmit(submit)}>
-          <Field
-            name="name_1"
-            component={formInput}
-            type="text"
-            label="Enter your name"
-          />
-          <br />
-          <Field
-            name="name_2"
-            component={formInput}
-            type="text"
-            label="Enter your partner name"
-          />
-          <br />
-          {error &&
-            <Message
-              error
-              header="Invalid entry"
-              content="Both names are same!"
-            />}
-          <br />
-          <Button color="blue" type="submit" content="Click here" />
-        </form>
-        <br />
-        <div className="message-box">
-          {hasMessage &&
-            <Message
-              color="blue"
-              header={messageHeader}
-              content={response.message}
-            />}
-        </div>
-      </div>
-    );
-  }
-}
+const InputForm = (props) => {
+  const { name1, name2 } = useSelector(({ inputReducer }) => inputReducer);
+  const dispatch = useDispatch();
+  const [name1State, setName1State] = useState('');
+  const [name2State, setName2State] = useState('');
+  const inputError = useSelector(
+    ({ resultReducer }) => resultReducer.inputError
+  );
+  const { message, errorMessage } = useSelector(( { resultReducer }) => resultReducer)
 
-const Form = reduxForm({
-  form: "GetNames",
-  validate
-})(InputForm);
-
-function mapStateToProps(state) {
-  return {
-    response: state.showResponse
+  const name1Handler = (e) => {
+    const { value } = e.target;
+    setName1State(value);
+    dispatch(updateName1(value));
   };
-}
 
-export default connect(mapStateToProps)(Form);
+  const name2Handler = (e) => {
+    const { value } = e.target;
+    setName2State(value);
+    dispatch(updateName2(value));
+  };
+
+  const submitHandler = () => {
+    dispatch(validateInputs({ name1, name2 }));
+    if (!inputError.name1 && !inputError.name2) {
+      if (name1 !== name2) {
+        dispatch(fetchResult({name1, name2}))
+      } else {
+        dispatch(sameNamesError())
+      }
+    }
+  };
+
+  return (
+    <div className='form'>
+      <div className='title'>
+        <Header as='h1' color='blue' content='FLAMES' />
+      </div>
+      <form>
+        <FormInput
+          name='name_1'
+          type='text'
+          label='Enter your name'
+          handler={name1Handler}
+          value={name1State}
+          errorMessage={inputError.name1}
+        />
+        <br />
+        <FormInput
+          name='name_2'
+          type='text'
+          label='Enter your partner name'
+          handler={name2Handler}
+          value={name2State}
+          errorMessage={inputError.name2}
+        />
+        <br />
+        {errorMessage && (
+        <Message error header='Invalid entry' content='Both names are same!' />
+      )}
+        <br />
+        <Button
+          color='blue'
+          type='button'
+          content='Click here'
+          onClick={submitHandler}
+        />
+      </form>
+      <br />
+      <div className='message-box'>
+        {message && (
+      <Message
+        color='blue'
+        content={message}
+      />
+    )}
+      </div>
+    </div>
+  );
+};
+
+export default InputForm;

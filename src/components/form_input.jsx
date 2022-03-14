@@ -1,24 +1,32 @@
-import React from "react";
-import { Header, Message, Input } from "semantic-ui-react";
+import React from 'react';
+import { Header, Message, Input } from 'semantic-ui-react';
 
-export const formInput = ({ input, label, type, meta: { touched, error } }) => {
-  const hasError = touched && error !== undefined;
+export const FormInput = ({
+  input,
+  label,
+  type,
+  handler,
+  value,
+  errorMessage,
+}) => {
   return (
     <div>
       <div>
-        <Header sub color="blue" content={label} />
+        <Header sub color='blue' content={label} />
       </div>
       <br />
-      <div className="reminder-form">
+      <div className='reminder-form'>
         <Input
-          error={hasError}
+          error={Boolean(errorMessage)}
           fluid
           placeholder={label}
           type={type}
+          onChange={handler}
           {...input}
+          value={value}
         />
       </div>
-      {hasError && <Message error header="Error" content={error} />}
+      {errorMessage && <Message error content={errorMessage} />}
     </div>
   );
 };
